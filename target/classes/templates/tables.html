@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tables</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+
+<section class="w3-container" th:if="${tables != null && tables.rows != null}">
+    <h2>Available Tables</h2>
+    <table class="w3-table w3-bordered w3-striped">
+        <thead>
+        <tr>
+            <th>Table Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="row : ${tables.rows}">
+            <td th:text="${row.elements[0].value}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="w3-container" th:if="${result != null && result.rows != null}">
+    <h2>Results</h2>
+    <table class="w3-table w3-bordered w3-striped">
+        <thead>
+        <tr>
+            <th>Operations Results</th>
+        </tr>
+        <tr th:each="element : ${result.rows[0].elements}">
+            <th th:text="${element.column}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="row : ${result.rows}">
+            <td th:each="element : ${row.elements}" th:text="${element.value}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="w3-container w3-padding-32">
+    <h2>Create a New Table</h2>
+    <form method="post" action="/mvc/tables/create">
+        <label for="tableName">Table Name:</label>
+        <input type="text" id="tableName" name="tableName" required>
+        <label for="columns">Columns:</label>
+        <input type="text" id="columns" name="columns" required>
+        <button class="w3-button w3-gray w3-round" type="submit">Create Table</button>
+    </form>
+</section>
+
+<section class="w3-container w3-padding-32">
+    <h2>Delete a Table</h2>
+    <form method="post" action="/mvc/tables/delete">
+        <label for="tableNameDelete">Table Name:</label>
+        <input type="text" id="tableNameDelete" name="tableName" required>
+        <button class="w3-button w3-gray w3-round" type="submit">Delete Table</button>
+    </form>
+</section>
+
+<div class="w3-container w3-padding-32">
+    <a href="/" class="w3-button w3-gray w3-round">Back to Database Operations</a>
+    <a href="/query" class="w3-button w3-gray w3-round">Queries</a>
+    <a href="/mvc/rows" class="w3-button w3-gray w3-round">Data</a>
+</div>
+
+
+</body>
+</html>

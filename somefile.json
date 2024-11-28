@@ -1,0 +1,19 @@
+{
+  "filePath": "somefile.json",
+  "tables": {
+    "moneyTable": {
+      "name": "moneyTable",
+      "rows": [],
+      "columns": {
+        "money": {
+          "type": "MONEY",
+          "name": "money"
+        },
+        "id": {
+          "type": "INT",
+          "name": "id"
+        }
+      }
+    }
+  }
+}

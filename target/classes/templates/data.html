@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Row Operations</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script>
+        window.onload = function() {
+            const errorMessage = document.getElementById('errorMessage');
+            if (errorMessage && errorMessage.textContent.trim() !== '') {
+                alert('Ошибка: ' + errorMessage.textContent);
+            }
+        };
+    </script>
+</head>
+<body>
+
+<section class="w3-container w3-padding-32" th:if="${rows != null && rows.rows != null && !rows.rows.isEmpty()}">
+    <h2>Data</h2>
+    <table class="w3-table w3-bordered w3-striped">
+        <thead>
+            <tr>
+                <th th:each="element : ${rows.rows[0].elements}" th:text="${element.column}"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="row : ${rows.rows}">
+                <td th:each="element : ${row.elements}" th:text="${element.value}"></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="w3-container w3-padding-32">
+    <h2>Select data</h2>
+    <form method="get" action="/mvc/rows/select">
+        <label for="tableName">Table Name:</label>
+        <input type="text" id="tableName" name="tableName" required>
+        <button class="w3-button w3-gray w3-round" type="submit">Select Rows</button>
+    </form>
+</section>
+
+<section class="w3-container w3-padding-32">
+    <h2>Insert Row</h2>
+    <form method="post" action="/mvc/rows/insert">
+        <label for="tableNameInsert">Table Name:</label>
+        <input type="text" id="tableNameInsert" name="tableName" required>
+        <label for="columnsInsert">Columns:</label>
+        <input type="text" id="columnsInsert" name="columns" required>
+        <label for="valuesInsert">Values:</label>
+        <input type="text" id="valuesInsert" name="values" required>
+        <button class="w3-button w3-gray w3-round" type="submit">Insert</button>
+    </form>
+</section>
+
+<div th:if="${errorMessage}" id="errorMessage" th:text="${errorMessage}" style="display: none;"></div>
+
+<section class="w3-container w3-padding-32">
+    <h2>Delete Row</h2>
+    <form method="post" action="/mvc/rows/delete">
+        <label for="tableNameDelete">Table Name:</label>
+        <input type="text" id="tableNameDelete" name="tableName" required>
+        <label for="conditionDelete">Condition:</label>
+        <input type="text" id="conditionDelete" name="condition" required>
+        <button class="w3-button w3-gray w3-round" type="submit">Delete</button>
+    </form>
+</section>
+
+<div class="w3-container w3-padding-32">
+    <a href="/" class="w3-button w3-gray w3-round">Back to Database Operations</a>
+    <a href="/query" class="w3-button w3-gray w3-round">Queries</a>
+    <a href="/mvc/tables" class="w3-button w3-gray w3-round">Tables</a>
+</div>
+
+</body>
+</html>

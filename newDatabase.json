@@ -1,0 +1,32 @@
+{
+  "filePath": "newDatabase.json",
+  "tables": {
+    "moneyTable": {
+      "name": "moneyTable",
+      "rows": [
+        {
+          "elements": {
+            "money": {
+              "value": "$8.00",
+              "column": "money"
+            },
+            "id": {
+              "value": "11",
+              "column": "id"
+            }
+          }
+        }
+      ],
+      "columns": {
+        "money": {
+          "type": "MONEY",
+          "name": "money"
+        },
+        "id": {
+          "type": "INT",
+          "name": "id"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Database</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function populateResult(res) {
+            $('#resultMsg').empty();
+            $('#result').empty();
+            rows = res["rows"];
+            if (rows == null || rows.length == 0) {
+                $('#resultMsg').append('<h3>Nothing found</h3>');
+            } else {
+                resultTable = "";
+                resultTable += '<table data-vertable="ver2">';
+                resultTable += '<thead>';
+                resultTable += '<tr class="row100 head">';
+                columnIndex = 1;
+                rows[0]["elements"].forEach(function (el) {
+                    resultTable += '<th class="column100 column' + columnIndex + '" data-column="column' + columnIndex + '">';
+                    columnIndex += 1;
+                    resultTable += el["column"];
+                    resultTable += '</th>';
+                });
+                resultTable += '</tr>';
+                resultTable += '</thead>';
+                resultTable += '<tbody>';
+                rows.forEach(function (row) {
+                    resultTable += '<tr class="row100">';
+                    columnIndex = 1;
+                    row["elements"].forEach(function (el) {
+                        resultTable += '<td class="column100 column' + columnIndex + '" data-column="column' + columnIndex + '">';
+                        columnIndex += 1;
+                        resultTable += el["value"];
+                        resultTable += '</td>';
+                    });
+                    resultTable += '</tr>';
+                });
+                resultTable += '</tbody>';
+                resultTable += '</table>';
+                $('#result').append(resultTable);
+            }
+        }
+
+        $(function () {
+            $('button[type=submit]').click(function (e) {
+
+                //Prevent default submission of form
+                e.preventDefault();
+
+                $.post({
+                    url: 'database',
+                    data: $('form[name=frm1]').serialize(),
+                    success: function (res) {
+                        populateResult(res);
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; height: 500px">
+
+<div>
+    <form name="frm1" class="flex">
+        <input type="text" class="textbox" name="query" placeholder="Run you database query" style="width: 350px">
+        <button type="submit" class="w3-button w3-gray w3-round">Run</button>
+    </form>
+
+    <div id="result" style="margin-bottom: 80px; margin-top: 20px" class="table100 ver2 m-110"></div>
+    <div id="resultMsg" class="footer"></div>
+
+    <div class="flex w3-container w3-padding-32">
+        <a href="/" class="w3-button w3-gray w3-round round-btn">Back to Database Operations</a>
+        <a href="/mvc/tables" class="w3-button w3-gray w3-round round-btn">Tables</a>
+        <a href="/mvc/rows" class="w3-button w3-gray w3-round round-btn">Data</a>
+    </div>
+</div>
+
+</body>
+</html>

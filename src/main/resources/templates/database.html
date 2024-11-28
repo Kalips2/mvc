@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DBMS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet"
+          href="https://colorlib.com/etc/tb/Table_Highlight_Vertical_Horizontal/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://colorlib.com/etc/tb/Table_Highlight_Vertical_Horizontal/css/main.css">
+    <link rel="stylesheet" href="https://colorlib.com/etc/tb/Table_Highlight_Vertical_Horizontal/css/util.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function populateResult(res) {
+            $('#resultMsg').empty();
+            $('#result').empty();
+            $('#resultMsg').append('<h3>Result: ' + res["status"] + '</h3>');
+            $('#resultMsg').append('<h4 color="red">' + res["report"] + '</h4>');
+            rows = res["rows"];
+            if (rows == null || rows.length == 0) {
+                $('#resultMsg').append('<h3>Nothing found</h3>');
+            } else {
+                resultTable = "";
+                resultTable += '<table data-vertable="ver2">';
+                resultTable += '<thead>';
+                resultTable += '<tr class="row100 head">';
+                columnIndex = 1;
+                rows[0]["elements"].forEach(function (el) {
+                    resultTable += '<th class="column100 column' + columnIndex + '" data-column="column' + columnIndex + '">';
+                    columnIndex += 1;
+                    resultTable += el["column"];
+                    resultTable += '</th>';
+                });
+                resultTable += '</tr>';
+                resultTable += '</thead>';
+                resultTable += '<tbody>';
+                rows.forEach(function (row) {
+                    resultTable += '<tr class="row100">';
+                    columnIndex = 1;
+                    row["elements"].forEach(function (el) {
+                        resultTable += '<td class="column100 column' + columnIndex + '" data-column="column' + columnIndex + '">';
+                        columnIndex += 1;
+                        resultTable += el["value"];
+                        resultTable += '</td>';
+                    });
+                    resultTable += '</tr>';
+                });
+                resultTable += '</tbody>';
+                resultTable += '</table>';
+                $('#result').append(resultTable);
+            }
+        }
+
+        $(function () {
+            $('button[type=submit]').click(function (e) {
+
+                //Prevent default submission of form
+                e.preventDefault();
+
+                $.post({
+                    url: 'database',
+                    data: $('form[name=frm1]').serialize(),
+                    success: function (res) {
+                        populateResult(res);
+                    }
+                })
+            });
+
+            $('#uploadBtn').click(function (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('file', $('#uploadFile')[0].files[0]);
+
+                $.ajax({
+                    url: '/uploadFile',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        alert('File uploaded successfully');
+                    },
+                    error: function () {
+                        alert('Error uploading file');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+<form id="createForm" method="POST" action="/createFile" class="flex flex-row w-40" style="height: 40px;">
+    <input type="text" class="textbox" id="filePathCreated" name="filePathCreated"
+           placeholder="Enter path with filename to create file" style="margin: 10px; width: 300px;">
+    <button id="createBtn" class="w3-button w3-gray w3-round" style="text-align: center;">Create</button>
+</form>
+
+<form id="uploadForm" enctype="multipart/form-data" class="flex flex-row w-40" style="height: 40px; margin-top: 10px">
+    <input type="file" id="uploadFile" name="file" class="textbox" style="margin: 10px; width: 300px;">
+    <button id="uploadBtn" class="w3-button w3-gray w3-round" style="text-align: center;">Upload</button>
+</form>
+
+</div>
+
+<script>
+    document.getElementById("downloadBtn").addEventListener("click", function (e) {
+        e.preventDefault();  // Prevent default form submission
+        var fileName = document.getElementById("fileName").value;
+
+        if (!fileName) {
+            alert("Please enter a file name to download.");
+            return;
+        }
+
+        // Create a form data object
+        var formData = new FormData();
+        formData.append("fileName", fileName);
+
+        // Send the POST request with the file name
+        fetch('/downloadFile', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.blob();  // Get the file as a Blob
+                } else {
+                    alert("File not found or download error");
+                    throw new Error("File download failed");
+                }
+            })
+            .then(blob => {
+                // Create a link to download the file
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = fileName;  // Set the file name
+                document.body.appendChild(a);
+                a.click();  // Simulate a click on the link
+                window.URL.revokeObjectURL(url);  // Clean up
+            })
+            .catch(error => console.error('Error during file download:', error));
+    });
+</script>
+
+<div id="result" style="margin-bottom: 80px; margin-top: 20px" class="table100 ver2 m-b-110"></div>
+<div id="resultMsg" class="footer"></div>
+
+
+<div class="w3-container w3-padding-32">
+    <a href="/query" class="w3-button w3-gray w3-round">Queries</a>
+    <a href="/mvc/tables" class="w3-button w3-gray w3-round">Tables</a>
+    <a href="/mvc/rows" class="w3-button w3-gray w3-round">Data</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+{
+  "filePath": "D:\\University\\University\\desktop\\testDataBase.json",
+  "tables": {
+    "moneyTable": {
+      "name": "moneyTable",
+      "rows": [
+        {
+          "elements": {
+            "amount": {
+              "value": "$4.00",
+              "column": "amount"
+            },
+            "char": {
+              "value": "b",
+              "column": "char"
+            },
+            "id": {
+              "value": "3",
+              "column": "id"
+            }
+          }
+        },
+        {
+          "elements": {
+            "amount": {
+              "value": "$15.00",
+              "column": "amount"
+            },
+            "char": {
+              "value": "b",
+              "column": "char"
+            },
+            "id": {
+              "value": "10",
+              "column": "id"
+            }
+          }
+        },
+        {
+          "elements": {
+            "amount": {
+              "value": "$115.00",
+              "column": "amount"
+            },
+            "char": {
+              "value": "c",
+              "column": "char"
+            },
+            "id": {
+              "value": "11",
+              "column": "id"
+            }
+          }
+        },
+        {
+          "elements": {
+            "amount": {
+              "value": "$1,000.00",
+              "column": "amount"
+            },
+            "char": {
+              "value": "d",
+              "column": "char"
+            },
+            "id": {
+              "value": "20",
+              "column": "id"
+            }
+          }
+        }
+      ],
+      "columns": {
+        "amount": {
+          "type": "MONEY",
+          "name": "amount"
+        },
+        "char": {
+          "type": "CHAR",
+          "name": "char"
+        },
+        "id": {
+          "type": "INT",
+          "name": "id"
+        }
+      }
+    },
+    "testTable": {
+      "name": "testTable",
+      "rows": [],
+      "columns": {
+        "money": {
+          "type": "MONEY",
+          "name": "money"
+        },
+        "id": {
+          "type": "INT",
+          "name": "id"
+        }
+      }
+    }
+  }
+}
